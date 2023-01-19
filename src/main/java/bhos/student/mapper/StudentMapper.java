@@ -1,5 +1,6 @@
-package bhos.student.dto;
+package bhos.student.mapper;
 
+import bhos.student.dto.StudentDTO;
 import bhos.student.entity.Student;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

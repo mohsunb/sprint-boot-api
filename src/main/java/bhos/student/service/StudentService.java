@@ -1,14 +1,13 @@
 package bhos.student.service;
 
 import bhos.student.dto.StudentDTO;
-import bhos.student.dto.StudentMapper;
+import bhos.student.mapper.StudentMapper;
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;
 import io.swagger.models.Response;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;

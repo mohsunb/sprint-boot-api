@@ -3,7 +3,6 @@ package bhos.student.service;
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +11,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class StudentService {
 
     private final StudentRepository repository;
 
-
+    @Autowired
+    public StudentService(StudentRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Student> getStudents() {
         return repository.findAll();
@@ -42,7 +43,7 @@ public class StudentService {
     }
 
     @Transactional
-    public StudentDto updateStudent(Integer studentId, String name, String surname) {
+    public void updateStudent(Integer studentId, String name, String surname) {
         Student student = repository.findById(studentId).orElseThrow(() ->  new IllegalStateException("a student with id " + studentId + " does not exist"));
 
         if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name))

@@ -4,9 +4,11 @@ import bhos.student.dto.StudentDTO;
 import bhos.student.dto.StudentMapper;
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;
+import io.swagger.models.Response;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class StudentService {
         return list;
     }
 
-    public void addNewStudent(Student student) {
+    public Response addNewStudent(Student student) {
         Optional<Student> studentOptional = repository.findStudentBySurname(student.getSurname());
         if (studentOptional.isPresent())
         {
@@ -38,6 +40,8 @@ public class StudentService {
         }
 
         repository.save(student);
+
+        return new Response().description("A new student was added successfully. {Name: " + student.getName() + ", Surname: " + student.getSurname() + "}");
     }
 
     public void deleteStudent(Integer studentId) {

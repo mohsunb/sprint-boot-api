@@ -3,6 +3,7 @@ package bhos.student.controller;
 import bhos.student.dto.StudentDTO;
 import bhos.student.entity.Student;
 import bhos.student.service.StudentService;
+import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public void registerNewStudent(@RequestBody Student student) {
-        service.addNewStudent(student);
+    public Response registerNewStudent(@RequestBody Student student) {
+        return service.addNewStudent(student);
     }
 
     @DeleteMapping(path = "{studentId}")

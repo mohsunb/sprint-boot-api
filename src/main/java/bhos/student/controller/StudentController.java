@@ -1,5 +1,6 @@
 package bhos.student.controller;
 
+import bhos.student.dto.StudentDTO;
 import bhos.student.entity.Student;
 import bhos.student.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
+    public List<StudentDTO> getStudents() {
         return service.getStudents();
     }
 

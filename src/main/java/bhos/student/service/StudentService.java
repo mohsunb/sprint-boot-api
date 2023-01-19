@@ -1,11 +1,14 @@
 package bhos.student.service;
 
+import bhos.student.dto.StudentDTO;
+import bhos.student.dto.StudentMapper;
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,8 +23,11 @@ public class StudentService {
         this.repository = repository;
     }
 
-    public List<Student> getStudents() {
-        return repository.findAll();
+    public List<StudentDTO> getStudents() {
+        List<StudentDTO> list = new ArrayList<>();
+        for (Student s : repository.findAll())
+            list.add(StudentMapper.INSTANCE.studentDTO(s));
+        return list;
     }
 
     public void addNewStudent(Student student) {

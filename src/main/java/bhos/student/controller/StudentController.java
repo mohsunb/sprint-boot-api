@@ -31,14 +31,14 @@ public class StudentController {
     }
 
     @DeleteMapping(path = "{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Integer studentId) {
-        service.deleteStudent(studentId);
+    public Response deleteStudent(@PathVariable("studentId") Integer studentId) {
+        return service.deleteStudent(studentId);
     }
 
     @PutMapping(path = "{studentId}")
-    public void updateStudent(@PathVariable("studentId") Integer studentId,
+    public Response updateStudent(@PathVariable("studentId") Integer studentId,
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) String surname) {
-        service.updateStudent(studentId, name, surname);
+        return service.updateStudent(studentId, name, surname);
     }
 }

@@ -43,16 +43,18 @@ public class StudentService {
         return new Response().description("A new student was added successfully. {Name: " + student.getName() + ", Surname: " + student.getSurname() + "}");
     }
 
-    public void deleteStudent(Integer studentId) {
+    public Response deleteStudent(Integer studentId) {
         if (!repository.existsById(studentId)) {
             throw new IllegalStateException("a student with id " + studentId + " does not exist");
         }
 
         repository.deleteById(studentId);
+
+        return new Response().description("Student with the ID " + studentId + " was deleted successfully.");
     }
 
     @Transactional
-    public void updateStudent(Integer studentId, String name, String surname) {
+    public Response updateStudent(Integer studentId, String name, String surname) {
         Student student = repository.findById(studentId).orElseThrow(() ->  new IllegalStateException("a student with id " + studentId + " does not exist"));
 
         if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name))
@@ -63,5 +65,13 @@ public class StudentService {
                 throw new IllegalStateException("this surname is already taken");
             student.setSurname(surname);
         }
+
+        return new Response().description("Student with the ID "
+                + studentId
+                + " was updated successfully. {name: "
+                + student.getName()
+                + ", surname: "
+                + student.getSurname()
+                + "}");
     }
 }

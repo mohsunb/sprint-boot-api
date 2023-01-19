@@ -1,5 +1,6 @@
 package bhos.student.controller;
 
+import bhos.student.dto.ResponseDTO;
 import bhos.student.dto.StudentDTO;
 import bhos.student.entity.Student;
 import bhos.student.service.StudentService;
@@ -26,19 +27,19 @@ public class StudentController {
     }
 
     @PostMapping
-    public Response registerNewStudent(@RequestBody Student student) {
+    public ResponseDTO registerNewStudent(@RequestBody Student student) {
         return service.addNewStudent(student);
     }
 
     @DeleteMapping(path = "{studentId}")
-    public Response deleteStudent(@PathVariable("studentId") Integer studentId) {
+    public ResponseDTO deleteStudent(@PathVariable("studentId") Integer studentId) {
         return service.deleteStudent(studentId);
     }
 
     @PutMapping(path = "{studentId}")
-    public Response updateStudent(@PathVariable("studentId") Integer studentId,
-                              @RequestParam(required = false) String name,
-                              @RequestParam(required = false) String surname) {
+    public ResponseDTO updateStudent(@PathVariable("studentId") Integer studentId,
+                                     @RequestParam(required = false) String name,
+                                     @RequestParam(required = false) String surname) {
         return service.updateStudent(studentId, name, surname);
     }
 }

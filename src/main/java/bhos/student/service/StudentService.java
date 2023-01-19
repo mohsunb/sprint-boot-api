@@ -1,7 +1,8 @@
 package bhos.student.service;
 
+import bhos.student.dto.ResponseDTO;
 import bhos.student.dto.StudentDTO;
-import bhos.student.mapper.StudentMapper;
+import bhos.student.mapper.DTOMapper;
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;
 import io.swagger.models.Response;
@@ -27,11 +28,11 @@ public class StudentService {
     public List<StudentDTO> getStudents() {
         List<StudentDTO> list = new ArrayList<>();
         for (Student s : repository.findAll())
-            list.add(StudentMapper.INSTANCE.studentDTO(s));
+            list.add(DTOMapper.INSTANCE.studentDTO(s));
         return list;
     }
 
-    public Response addNewStudent(Student student) {
+    public ResponseDTO addNewStudent(Student student) {
         Optional<Student> studentOptional = repository.findStudentBySurname(student.getSurname());
         if (studentOptional.isPresent())
         {
@@ -40,21 +41,24 @@ public class StudentService {
 
         repository.save(student);
 
-        return new Response().description("A new student was added successfully. {Name: " + student.getName() + ", Surname: " + student.getSurname() + "}");
+        Response response = new Response().description("A new student was added successfully. {Name: "
+                + student.getName() + ", Surname: " + student.getSurname() + "}");
+        return DTOMapper.INSTANCE.responseDTO(response);
     }
 
-    public Response deleteStudent(Integer studentId) {
+    public ResponseDTO deleteStudent(Integer studentId) {
         if (!repository.existsById(studentId)) {
             throw new IllegalStateException("a student with id " + studentId + " does not exist");
         }
 
         repository.deleteById(studentId);
 
-        return new Response().description("Student with the ID " + studentId + " was deleted successfully.");
+        Response response = new Response().description("Student with the ID " + studentId + " was deleted successfully.");
+        return DTOMapper.INSTANCE.responseDTO(response);
     }
 
     @Transactional
-    public Response updateStudent(Integer studentId, String name, String surname) {
+    public ResponseDTO updateStudent(Integer studentId, String name, String surname) {
         Student student = repository.findById(studentId).orElseThrow(() ->  new IllegalStateException("a student with id " + studentId + " does not exist"));
 
         if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name))
@@ -66,12 +70,14 @@ public class StudentService {
             student.setSurname(surname);
         }
 
-        return new Response().description("Student with the ID "
+
+        Response response =  new Response().description("Student with the ID "
                 + studentId
                 + " was updated successfully. {name: "
                 + student.getName()
                 + ", surname: "
                 + student.getSurname()
                 + "}");
+        return DTOMapper.INSTANCE.responseDTO(response);
     }
 }

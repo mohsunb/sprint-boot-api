@@ -2,6 +2,8 @@ package bhos.student.service;
 
 import bhos.student.dto.ResponseDTO;
 import bhos.student.dto.StudentDTO;
+import bhos.student.exception.StudentNotFoundException;
+import bhos.student.exception.SurnameAlreadyTakenException;
 import bhos.student.mapper.DTOMapper;
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;
@@ -36,19 +38,19 @@ public class StudentService {
         Optional<Student> studentOptional = repository.findStudentBySurname(student.getSurname());
         if (studentOptional.isPresent())
         {
-            throw new IllegalStateException("surname taken");
+            throw new SurnameAlreadyTakenException("This surname is already taken.");
         }
 
         repository.save(student);
 
-        Response response = new Response().description("A new student was added successfully. {Name: "
-                + student.getName() + ", Surname: " + student.getSurname() + "}");
+        Response response = new Response().description("A new student was added successfully. {name: "
+                + student.getName() + ", surname: " + student.getSurname() + "}");
         return DTOMapper.INSTANCE.responseDTO(response);
     }
 
     public ResponseDTO deleteStudent(Integer studentId) {
         if (!repository.existsById(studentId)) {
-            throw new IllegalStateException("a student with id " + studentId + " does not exist");
+            throw new StudentNotFoundException("A student with ID " + studentId + " does not exist.");
         }
 
         repository.deleteById(studentId);
@@ -59,14 +61,15 @@ public class StudentService {
 
     @Transactional
     public ResponseDTO updateStudent(Integer studentId, String name, String surname) {
-        Student student = repository.findById(studentId).orElseThrow(() ->  new IllegalStateException("a student with id " + studentId + " does not exist"));
+        Student student = repository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("A student with the ID " + studentId + " does not exist."));
 
         if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name))
             student.setName(name);
 
         if (surname != null && surname.length() > 0 && !Objects.equals(student.getSurname(), surname)) {
             if (repository.findStudentBySurname(surname).isPresent())
-                throw new IllegalStateException("this surname is already taken");
+                throw new SurnameAlreadyTakenException("This surname is already taken.");
             student.setSurname(surname);
         }
 

@@ -1,4 +1,4 @@
-package bhos.student;
+package bhos.student.config;
 
 import bhos.student.entity.Student;
 import bhos.student.repository.StudentRepository;

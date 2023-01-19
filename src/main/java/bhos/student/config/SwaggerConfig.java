@@ -1,4 +1,4 @@
-package bhos.student;
+package bhos.student.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
